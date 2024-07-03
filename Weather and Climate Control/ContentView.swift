@@ -5,17 +5,19 @@
 //  Created by Yumeng Liu on 7/2/24.
 //
 
+import Foundation
 import SwiftUI
 
 struct ContentView: View {
+    @StateObject var locationManager = LocationManager()
     var body: some View {
         VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+            WelcomeView()
+                .environmentObject(locationManager)
+            
         }
-        .padding()
+        
+        
     }
 }
 
