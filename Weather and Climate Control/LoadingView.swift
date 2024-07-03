@@ -13,10 +13,11 @@ struct LoadingView: View {
             Rectangle()
                 .ignoresSafeArea()
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .foregroundStyle(.linearGradient(colors: [.blue, .blue.opacity(0.5)], startPoint: .top, endPoint: .bottom))
+                .foregroundStyle(.linearGradient(colors: [.blue, .blue.opacity(1)], startPoint: .top, endPoint: .bottom))
                 .background(Color(hue: 0.1, saturation: 0.1, brightness: 0))
             ProgressView()
-                .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                .progressViewStyle(CircularProgressViewStyle())
+                .scaleEffect(3)
                 .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, maxHeight: .infinity)
         }
         

@@ -25,6 +25,7 @@ struct ContentView: View {
                         .task {
                             do {
                                 weather = try await weatherManager.getCurrentWeather(latitude: location.latitude, longitude: location.longitude)
+                                
                             } catch networkingError.responseError{
                                 print("Response Error")
                             } catch networkingError.dataError {
@@ -51,7 +52,7 @@ struct ContentView: View {
             
             
         }
-        .foregroundStyle(.linearGradient(colors: [.blue, .blue.opacity(0.5)], startPoint: .top, endPoint: .bottom))
+        .foregroundStyle(.linearGradient(colors: [.blue, .blue.opacity(0.9)], startPoint: .top, endPoint: .bottom))
         .background(Color(hue: 0.1, saturation: 0.1, brightness: 0))
         
         
