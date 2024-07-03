@@ -8,10 +8,10 @@
 import SwiftUI
 
 @main
-struct Weather_and_Climate_ControlApp: App {
+struct WeatherApp: App {
     var body: some Scene {
         WindowGroup {
-            WeatherView()
+            ContentView()
         }
     }
 }

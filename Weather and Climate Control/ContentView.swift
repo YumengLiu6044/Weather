@@ -12,10 +12,24 @@ struct ContentView: View {
     @StateObject var locationManager = LocationManager()
     var body: some View {
         VStack {
-            WelcomeView()
-                .environmentObject(locationManager)
+            if let location = locationManager.location {
+                Text("Your locations are: \(location.longitude), \(location.latitude)")
+            }
+            else
+            {
+                if locationManager.isLoading{
+                    ProgressView()
+                }
+                else {
+                    WelcomeView()
+                        .environmentObject(locationManager)
+                }
+            }
+            
             
         }
+        .foregroundStyle(.linearGradient(colors: [.blue, .blue.opacity(0.5)], startPoint: .top, endPoint: .bottom))
+        .background(Color(hue: 0.656, saturation: 0.787, brightness: 0.354))
         
         
     }
