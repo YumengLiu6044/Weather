@@ -9,7 +9,7 @@ import SwiftUI
 import OpenMeteoSdk
 
 struct WeatherView: View {
-    var response: WeatherApiResponse
+    var response: WeatherData
     
     var body: some View {
         ZStack {
@@ -21,7 +21,9 @@ struct WeatherView: View {
             
         }
         .onAppear {
-            print(response.daily ?? "None")
+            for i in response.daily.time {
+                print(getWeekdayName(from: i))
+            }
         }
     }
     

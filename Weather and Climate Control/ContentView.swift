@@ -13,7 +13,7 @@ import OpenMeteoSdk
 struct ContentView: View {
     @StateObject var locationManager = LocationManager()
     var weatherManager = WeatherManager()
-    @State var weather : WeatherApiResponse?
+    @State var weather : WeatherData?
     var body: some View {
         VStack {
             if let location = locationManager.location {
@@ -24,9 +24,13 @@ struct ContentView: View {
                     LoadingView()
                         .task {
                             do {
-                                weather = try await weatherManager.getCurrentWeather(latitude: location.latitude, longitude: location.longitude)[0]
+                                weather = try await weatherManager.getCurrentWeather(latitude: location.latitude, longitude: location.longitude)
+                            } catch networkingError.responseError{
+                                print("Response Error")
+                            } catch networkingError.dataError {
+                                print("Data error")
                             } catch {
-                                print("Error getting weather")
+                                print("Unexpected error")
                             }
                             
                         }
