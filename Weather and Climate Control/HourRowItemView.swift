@@ -8,13 +8,13 @@
 import SwiftUI
 
 struct HourRowItemView: View {
-    var dayWeatherItem: hourWeatherItem = hourWeatherItem(hour: "Now", weatherIconName: "http://openweathermap.org/img/wn/01d@2x.png", temperature: 32, temperatureUnit: "°C")
+    var hourWeatherItem: HourWeatherItem = HourWeatherItem(hour: "Now", weatherIconName: "http://openweathermap.org/img/wn/01d@2x.png", temperature: 32, temperatureUnit: "°C")
     
     var body: some View {
         VStack{
-            Text(dayWeatherItem.hour)
+            Text(hourWeatherItem.hour)
 
-            AsyncImage(url: URL(string: dayWeatherItem.weatherIconName), transaction: Transaction(animation: .spring(response: 1, dampingFraction: 0.6, blendDuration: 0.5))) { phase in
+            AsyncImage(url: URL(string: hourWeatherItem.weatherIconName), transaction: Transaction(animation: .spring(response: 1, dampingFraction: 0.6, blendDuration: 0.5))) { phase in
                 switch phase {
                 case .success(let image):
                     image.resizable()
@@ -33,20 +33,20 @@ struct HourRowItemView: View {
                 @unknown default:
                     EmptyView()
                 }}
-            Text(dayWeatherItem.presentTemperature())
+            Text(hourWeatherItem.presentTemperature())
             
         }
         .font(.title2)
         .foregroundStyle(Color(.white))
         .shadow(radius: /*@START_MENU_TOKEN@*/10/*@END_MENU_TOKEN@*/)
-        .padding(10.0)
+        .padding(5.0)
         .clipShape(.rect(cornerRadius: 7))
         
         
     }
 }
 
-struct hourWeatherItem : Identifiable {
+struct HourWeatherItem : Identifiable {
     let id: UUID = UUID()
     let hour: String
     let weatherIconName: String
@@ -54,7 +54,7 @@ struct hourWeatherItem : Identifiable {
     let temperatureUnit: String
     
     func presentTemperature() -> String {
-        return "\(temperature)\(temperatureUnit)"
+        return "\(temperature) \(temperatureUnit)"
     }
     
 }
