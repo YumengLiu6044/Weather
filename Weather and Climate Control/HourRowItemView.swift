@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct HourRowItemView: View {
+    
+    @State private var isLoading = true
     var hourWeatherItem: HourWeatherItem = HourWeatherItem(hour: "Now", weatherIconName: "http://openweathermap.org/img/wn/01d@2x.png", temperature: 32, temperatureUnit: "°C")
     
     var body: some View {
@@ -20,15 +22,28 @@ struct HourRowItemView: View {
                     image.resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 50)
+                        
+                        .onAppear {
+                            isLoading = false
+                        }
                     
                 case .failure:
                     Image(systemName: "questionmark.app")
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 50)
+                        
+                        .onAppear {
+                            isLoading = false
+                        }
                     
                 case .empty:
                     ProgressView()
                         .padding(.bottom, 5)
+                        
+                        .onAppear {
+                            isLoading = true
+                        }
+                    
                     
                 @unknown default:
                     EmptyView()
@@ -36,6 +51,7 @@ struct HourRowItemView: View {
             Text(hourWeatherItem.presentTemperature())
             
         }
+        .redacted(reason: isLoading ? .placeholder : [])
         .font(.title2)
         .foregroundStyle(Color(.white))
         .shadow(radius: /*@START_MENU_TOKEN@*/10/*@END_MENU_TOKEN@*/)

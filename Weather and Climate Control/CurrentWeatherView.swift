@@ -9,6 +9,8 @@ import SwiftUI
 
 struct CurrentWeatherView: View {
     var currentWeather = CurrentWeather(dayName: "Wednesday", date: "Jul 3", temperature: 36, temperatureUnit: "°C", weatherIconName: "http://openweathermap.org/img/wn/01d@2x.png")
+    @State private var isLoading = true
+    
     var body: some View {
         VStack {
             HStack{
@@ -19,18 +21,30 @@ struct CurrentWeatherView: View {
                             image.resizable()
                                 .aspectRatio(contentMode: .fit)
                                 .frame(width: 100)
+                                .onAppear {
+                                    isLoading = false
+                                }
                             
                         case .failure:
                             Image(systemName: "questionmark.app")
                                 .aspectRatio(contentMode: .fit)
                                 .frame(width: 100)
+                                .onAppear {
+                                    isLoading = false
+                                }
                             
                         case .empty:
                             ProgressView()
                                 .padding(.bottom, 5)
+                                .onAppear {
+                                    isLoading = true
+                                }
                             
                         @unknown default:
                             EmptyView()
+                                .onAppear {
+                                    isLoading = false
+                                }
                         }}
                     
                     Text(currentWeather.presentTemperature())
@@ -46,6 +60,7 @@ struct CurrentWeatherView: View {
                 
             
         }
+        .redacted(reason: isLoading ? .placeholder : [])
         .font(.system(size: 40))
         .foregroundStyle(.white)
         .shadow(radius: /*@START_MENU_TOKEN@*/10/*@END_MENU_TOKEN@*/)

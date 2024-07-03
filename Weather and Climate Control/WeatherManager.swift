@@ -32,7 +32,7 @@ class WeatherManager {
 
 func getWeekdayName(from date: Date) -> String {
     let dateFormatter = DateFormatter()
-    dateFormatter.dateFormat = "EEEE" // EEEE gives the full name of the weekday
+    dateFormatter.dateFormat = "EEE"
     let weekdayName = dateFormatter.string(from: date)
     return weekdayName
 }
@@ -52,7 +52,6 @@ func getHourinAMPMFormat(from date: Date) -> String {
 
 func getWeatherIconName(code: Int, isDay: Int) -> String {
     let timeOfDay = (isDay == 1) ? "day" : "night"
-    print(timeOfDay)
     if let weatherData = weatherCodeIconMapping[String(code)],
        let timeData = weatherData[timeOfDay],
        let imageName = timeData["image"] {
@@ -115,8 +114,8 @@ struct WeatherData: Codable {
     struct Daily: Codable {
         let time: [Date]
         let weather_code: [Int]
-        let temperature_2m_max: [Float]
-        let temperature_2m_min: [Float]
+        let temperature_2m_max: [Double]
+        let temperature_2m_min: [Double]
     }
 }
 
@@ -177,4 +176,20 @@ func loadHourWeather(_ response: WeatherData) -> [HourWeatherItem] {
     }
     return hourArray
     
+}
+
+func loadDailyWeather(_ response: WeatherData) -> [DayWeatherItem] {
+    var dayArray: [DayWeatherItem] = []
+    let dailyData = response.daily
+    
+    for i in 0..<dailyData.time.count {
+        dayArray.append(DayWeatherItem(
+            dayName: getWeekdayName(from: dailyData.time[i]),
+            maxTemperature: dailyData.temperature_2m_max[i],
+            minTemperature: dailyData.temperature_2m_min[i],
+            temperatureUnit: response.daily_units.temperature_2m_min,
+            weatherIconName: getWeatherIconName(code: dailyData.weather_code[i], isDay: 1))
+        )
+    }
+    return dayArray
 }

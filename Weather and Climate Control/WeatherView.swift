@@ -11,7 +11,7 @@ import OpenMeteoSdk
 struct WeatherView: View {
     var response: WeatherData
     var cityName: String = "Your location"
-    @State var hourWeatherArray: [HourWeatherItem] = [
+    @State private var hourWeatherArray: [HourWeatherItem] = [
         HourWeatherItem(hour: "Now", weatherIconName: "", temperature: 32, temperatureUnit: "°C"),
         HourWeatherItem(hour: "10AM", weatherIconName: "", temperature: 36, temperatureUnit: "°C"),
         HourWeatherItem(hour: "11AM", weatherIconName: "", temperature: 38, temperatureUnit: "°C"),
@@ -22,7 +22,7 @@ struct WeatherView: View {
         HourWeatherItem(hour: "4PM", weatherIconName: "", temperature: 38, temperatureUnit: "°C"),
         HourWeatherItem(hour: "5PM", weatherIconName: "", temperature: 38, temperatureUnit: "°C")
     ]
-    var dayWeatherArray: [DayWeatherItem] = [
+    @State private var dayWeatherArray: [DayWeatherItem] = [
         DayWeatherItem(dayName: "Today", maxTemperature: 42, minTemperature: 18, temperatureUnit: "°C", weatherIconName: ""),
         DayWeatherItem(dayName: "Thursday", maxTemperature: 41, minTemperature: 17, temperatureUnit: "°C", weatherIconName: ""),
         DayWeatherItem(dayName: "Friday", maxTemperature: 38, minTemperature: 16, temperatureUnit: "°C", weatherIconName: ""),
@@ -31,7 +31,7 @@ struct WeatherView: View {
         DayWeatherItem(dayName: "Monday", maxTemperature: 30, minTemperature: 12, temperatureUnit: "°C", weatherIconName: ""),
         DayWeatherItem(dayName: "Tuesday", maxTemperature: 32, minTemperature: 13, temperatureUnit: "°C", weatherIconName: "")
     ]
-    @State var currentWeather: CurrentWeather = CurrentWeather(dayName: "Wednesday", date: "Jul 3", temperature: 36, temperatureUnit: "°C", weatherIconName: "http://openweathermap.org/img/wn/01d@2x.png")
+    @State private var currentWeather: CurrentWeather = CurrentWeather(dayName: "Wednesday", date: "Jul 3", temperature: 36, temperatureUnit: "°C", weatherIconName: "http://openweathermap.org/img/wn/01d@2x.png")
     
     @State private var isVisible = false
     
@@ -107,6 +107,7 @@ struct WeatherView: View {
             }
             currentWeather = loadCurrentWeather(response)
             hourWeatherArray = loadHourWeather(response)
+            dayWeatherArray = loadDailyWeather(response)
         }
         
     }
