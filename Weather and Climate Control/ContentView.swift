@@ -7,18 +7,37 @@
 
 import Foundation
 import SwiftUI
+import OpenMeteoSdk
+
 
 struct ContentView: View {
     @StateObject var locationManager = LocationManager()
+    var weatherManager = WeatherManager()
+    @State var weather : WeatherApiResponse?
     var body: some View {
         VStack {
             if let location = locationManager.location {
-                Text("Your locations are: \(location.longitude), \(location.latitude)")
+                if let weather = weather {
+                    WeatherView(response: weather)
+                }
+                else {
+                    LoadingView()
+                        .task {
+                            do {
+                                weather = try await weatherManager.getCurrentWeather(latitude: location.latitude, longitude: location.longitude)[0]
+                            } catch {
+                                print("Error getting weather")
+                            }
+                            
+                        }
+                }
+                    
             }
             else
             {
                 if locationManager.isLoading{
-                    ProgressView()
+                    LoadingView()
+                
                 }
                 else {
                     WelcomeView()
@@ -29,7 +48,7 @@ struct ContentView: View {
             
         }
         .foregroundStyle(.linearGradient(colors: [.blue, .blue.opacity(0.5)], startPoint: .top, endPoint: .bottom))
-        .background(Color(hue: 0.656, saturation: 0.787, brightness: 0.354))
+        .background(Color(hue: 0.1, saturation: 0.1, brightness: 0))
         
         
     }

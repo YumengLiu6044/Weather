@@ -6,12 +6,23 @@
 //
 
 import SwiftUI
+import OpenMeteoSdk
 
 struct WeatherView: View {
-    
+    var response: WeatherApiResponse
     
     var body: some View {
-        Text("Hello")
+        ZStack {
+            Rectangle()
+                .ignoresSafeArea()
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .foregroundStyle(.linearGradient(colors: [.blue, .blue.opacity(0.5)], startPoint: .top, endPoint: .bottom))
+                .background(Color(hue: 0.1, saturation: 0.1, brightness: 0))
+            
+        }
+        .onAppear {
+            print(response.daily ?? "None")
+        }
     }
     
     
