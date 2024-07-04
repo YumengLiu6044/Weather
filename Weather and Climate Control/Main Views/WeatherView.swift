@@ -108,21 +108,20 @@ struct WeatherView: View {
             withAnimation {
                 isVisible = true
             }
+            locationManager.lookUpCurrentLocation {
+                placemark in
+                
+                if let placemark = placemark {
+                    // Access placemark information like locality (city), administrativeArea (state), etc.
+                    if let locality = placemark.locality, let administrativeArea = placemark.administrativeArea {
+                        cityName = "\(locality), \(administrativeArea)"
+                    }
+                }
+            }
         }
         .task {
             do {
                 response = try await weatherManager.getCurrentWeather(latitude: location.latitude, longitude: location.longitude)
-                locationManager.lookUpCurrentLocation {
-                    placemark in
-                    
-                    if let placemark = placemark {
-                        // Access placemark information like locality (city), administrativeArea (state), etc.
-                        if let locality = placemark.locality, let administrativeArea = placemark.administrativeArea {
-                            cityName = "\(locality), \(administrativeArea)"
-                        }
-                      }
-                }
-                
                 
             } catch networkingError.responseError {
                 print("Response Error")
@@ -136,10 +135,11 @@ struct WeatherView: View {
                 hourWeatherArray = loadHourWeather(response)
                 dayWeatherArray = loadDailyWeather(response)
             }
-            isLoading = false
+            
             if let response = response {
                 isDay = (isDayTime(date: Date(), response: response) == 1)
             }
+            isLoading = false
         }
     }
 }

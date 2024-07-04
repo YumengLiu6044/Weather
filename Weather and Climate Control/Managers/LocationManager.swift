@@ -12,8 +12,6 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate{
     
     let manager = CLLocationManager()
     
-    @Published var locality : String = ""
-    @Published var administrativeArea : String = ""
     @Published var location: CLLocationCoordinate2D?
     @Published var isLoading = false
     
