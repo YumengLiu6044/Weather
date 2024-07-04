@@ -63,13 +63,16 @@ struct CurrentWeatherView: View {
                 .clipShape(.rect(cornerRadius: 10))
                 Spacer()
                 VStack{
-                    Text(currentTime + "  " + currentWeather.dayName + "\n" + currentWeather.date)
-                        .font(.system(size: 35))
+                    Text(currentTime)
                         .onReceive(timer) { _ in
                             self.currentTime = getHourAndMinute(from: Date())
                         }
+                    
+                    Text(currentWeather.dayName)
+                    Text(currentWeather.date)
                 }
-                .multilineTextAlignment(.trailing)
+                .font(.system(size: 35))
+                .frame(alignment: .trailing)
             }
                 
             
