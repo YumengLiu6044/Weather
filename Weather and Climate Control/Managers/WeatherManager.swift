@@ -10,7 +10,7 @@ class WeatherManager {
     func getCurrentWeather(latitude: CLLocationDegrees, longitude: CLLocationDegrees) async throws -> WeatherData {
         let localTimeZoneIdentifier: String = TimeZone.current.identifier
         let timeZoneComponents: [String] = localTimeZoneIdentifier.components(separatedBy: "/")
-        guard let url = URL(string: "https://api.open-meteo.com/v1/forecast?latitude=\(latitude)&longitude=\(longitude)&current=temperature_2m,is_day,weather_code&hourly=temperature_2m,weather_code&daily=weather_code,temperature_2m_max,temperature_2m_min&timeformat=unixtime&timezone=\(timeZoneComponents[0])%2F\(timeZoneComponents[1])&format=json") else { fatalError("Missing URL") }
+        guard let url = URL(string: "https://api.open-meteo.com/v1/forecast?latitude=\(latitude)&longitude=\(longitude)&current=temperature_2m,is_day,weather_code&hourly=temperature_2m,weather_code&daily=weather_code,temperature_2m_max,temperature_2m_min,sunset,sunrise&timeformat=unixtime&timezone=\(timeZoneComponents[0])%2F\(timeZoneComponents[1])&format=json") else { fatalError("Missing URL") }
         
         let (data, response) = try await URLSession.shared.data(from: url)
         guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
@@ -29,50 +29,7 @@ class WeatherManager {
 
 }
 
-func getWeekdayName(from date: Date) -> String {
-    let dateFormatter = DateFormatter()
-    dateFormatter.dateFormat = "EEE"
-    let weekdayName = dateFormatter.string(from: date)
-    return weekdayName
-}
 
-func getCurrentShortDateString(from date: Date) -> String {
-    let dateFormatter = DateFormatter()
-    dateFormatter.dateFormat = "MMM d"
-    let dateString = dateFormatter.string(from: date)
-    return dateString
-}
-
-func getHourinAMPMFormat(from date: Date) -> String {
-    let dateFormatter = DateFormatter()
-    dateFormatter.dateFormat = "h a"  // 'h' for 12-hour format and 'a' for AM/PM
-    return dateFormatter.string(from: date)
-}
-
-func getHourAndMinute(from date: Date) -> String {
-    let dateFormatter = DateFormatter()
-    dateFormatter.dateFormat = "HH:mm:ss"
-    return dateFormatter.string(from: date)
-}
-
-func getWeatherIconName(code: Int, isDay: Int) -> String {
-    let timeOfDay = (isDay == 1) ? "day" : "night"
-    if let weatherData = weatherCodeIconMapping[String(code)],
-       let timeData = weatherData[timeOfDay],
-       let imageName = timeData["image"] {
-        return "https://openweathermap.org/img/wn/" + imageName
-    }
-    return "None"
-}
-
-func getWeatherName(code: Int) -> String {
-    if let weatherData = weatherCodeIconMapping[String(code)],
-       let dayData = weatherData["day"],
-        let description = dayData["description"] {
-        return description
-    }
-    return "None"
-}
 // Model of the response body we get from calling the API
 
 struct WeatherData: Codable {
@@ -130,6 +87,8 @@ struct WeatherData: Codable {
         let weather_code: [Int]
         let temperature_2m_max: [Double]
         let temperature_2m_min: [Double]
+        let sunset: [Date]
+        let sunrise: [Date]
     }
 }
 
@@ -138,16 +97,51 @@ enum networkingError : Error {
     case responseError, dataError
 }
 
-func loadCurrentWeather(_ response: WeatherData) -> CurrentWeather {
-    return CurrentWeather(
-        dayName: getWeekdayName(from: response.current.time),
-        date: getCurrentShortDateString(from: response.current.time),
-        temperature: response.current.temperature_2m,
-        temperatureUnit: response.current_units.temperature_2m,
-        weatherName: getWeatherName(code: response.current.weather_code),
-        weatherIconName: getWeatherIconName(code: response.current.weather_code, isDay: response.current.is_day))
-        
+func getWeekdayName(from date: Date) -> String {
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateFormat = "EEE"
+    let weekdayName = dateFormatter.string(from: date)
+    return weekdayName
 }
+
+func getCurrentShortDateString(from date: Date) -> String {
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateFormat = "MMM d"
+    let dateString = dateFormatter.string(from: date)
+    return dateString
+}
+
+func getHourinAMPMFormat(from date: Date) -> String {
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateFormat = "h a"  // 'h' for 12-hour format and 'a' for AM/PM
+    return dateFormatter.string(from: date)
+}
+
+func getHourAndMinute(from date: Date) -> String {
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateFormat = "HH:mm:ss"
+    return dateFormatter.string(from: date)
+}
+
+func getWeatherIconName(code: Int, isDay: Int) -> String {
+    let timeOfDay = (isDay == 1) ? "day" : "night"
+    if let weatherData = weatherCodeIconMapping[String(code)],
+       let timeData = weatherData[timeOfDay],
+       let imageName = timeData["image"] {
+        return "https://openweathermap.org/img/wn/" + imageName
+    }
+    return "None"
+}
+
+func getWeatherName(code: Int) -> String {
+    if let weatherData = weatherCodeIconMapping[String(code)],
+       let dayData = weatherData["day"],
+        let description = dayData["description"] {
+        return description
+    }
+    return "None"
+}
+
 
 func isSameDateAndHour(date1: Date, date2: Date) -> Bool {
     let calendar = Calendar.current
@@ -161,15 +155,49 @@ func isSameDateAndHour(date1: Date, date2: Date) -> Bool {
            components1.hour == components2.hour
 }
 
-func isDayTime(date: Date) -> Int {
+func isSameDate(date1: Date, date2: Date) -> Bool {
     let calendar = Calendar.current
-    let hour = calendar.component(.hour, from: date)
     
-    if hour >= 6 && hour < 18 {
-        return 1  // Day time
-    } else {
-        return 0  // Night time
+    let components1 = calendar.dateComponents([.year, .month, .day, .hour], from: date1)
+    let components2 = calendar.dateComponents([.year, .month, .day, .hour], from: date2)
+    
+    return components1.year == components2.year &&
+           components1.month == components2.month &&
+           components1.day == components2.day
+}
+
+func isDayTime(date: Date, response: WeatherData) -> Int {
+    var sunriseTime: Date?
+    var sunsetTime: Date?
+    for i in 0...6 {
+        if isSameDate(date1: date, date2: response.daily.sunrise[i]) {
+            sunriseTime = response.daily.sunrise[i]
+        }
+        if isSameDate(date1: date, date2: response.daily.sunset[i]) {
+            sunsetTime = response.daily.sunset[i]
+        }
     }
+    
+    if let sunsetTime = sunsetTime, let sunriseTime = sunriseTime{
+        if sunriseTime <= date && date < sunsetTime {
+            return 1
+        }
+        else {
+            return 0
+        }
+    }
+    return 1
+}
+
+func loadCurrentWeather(_ response: WeatherData) -> CurrentWeather {
+    return CurrentWeather(
+        dayName: getWeekdayName(from: response.current.time),
+        date: getCurrentShortDateString(from: response.current.time),
+        temperature: response.current.temperature_2m,
+        temperatureUnit: response.current_units.temperature_2m,
+        weatherName: getWeatherName(code: response.current.weather_code),
+        weatherIconName: getWeatherIconName(code: response.current.weather_code, isDay: response.current.is_day))
+        
 }
 
 func loadHourWeather(_ response: WeatherData) -> [HourWeatherItem] {
@@ -185,7 +213,7 @@ func loadHourWeather(_ response: WeatherData) -> [HourWeatherItem] {
     for i in 0...23 {
         hourArray.append(HourWeatherItem(
             hour: (i == 0) ? "Now": getHourinAMPMFormat(from: hourlyData.time[i + hourStartIndex]),
-            weatherIconName: getWeatherIconName(code: hourlyData.weather_code[i + hourStartIndex], isDay: isDayTime(date: hourlyData.time[i + hourStartIndex])),
+            weatherIconName: getWeatherIconName(code: hourlyData.weather_code[i + hourStartIndex], isDay: isDayTime(date: hourlyData.time[i + hourStartIndex], response: response)),
             temperature: hourlyData.temperature_2m[i + hourStartIndex],
             temperatureUnit: response.hourly_units.temperature_2m
         ))

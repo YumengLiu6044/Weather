@@ -49,6 +49,7 @@ struct WeatherView: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .foregroundStyle(.linearGradient(colors: [isDay ? .blue : .black, .blue.opacity(1)], startPoint: .top, endPoint: .bottom))
                 .background(Color(hue: 0.1, saturation: 0.1, brightness: 0))
+                .transition(.slide)
             
             if isVisible {
                 VStack(spacing: 20) {
@@ -130,7 +131,9 @@ struct WeatherView: View {
                 dayWeatherArray = loadDailyWeather(response)
             }
             isLoading = false
-            isDay = (isDayTime(date: Date()) != 0)
+            if let response = response {
+                isDay = (isDayTime(date: Date(), response: response) == 1)
+            }
         }
         
     }
