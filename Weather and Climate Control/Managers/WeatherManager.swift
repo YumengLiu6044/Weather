@@ -130,13 +130,9 @@ func getWeatherIconName(code: Int, isDay: Int) -> String {
         return weatherCodeIconMapping[String(code)]?[timeOfDay]?["image"].flatMap { "https://openweathermap.org/img/wn/" + $0 } ?? "None"
 }
 
-func getWeatherName(code: Int) -> String {
-    if let weatherData = weatherCodeIconMapping[String(code)],
-       let dayData = weatherData["day"],
-        let description = dayData["description"] {
-        return description
-    }
-    return "None"
+func getWeatherName(code: Int, isDay: Int) -> String {
+    let timeOfDay = (isDay == 1) ? "day" : "night"
+        return weatherCodeIconMapping[String(code)]?[timeOfDay]?["description"].flatMap { $0 } ?? "None"
 }
 
 
@@ -187,13 +183,14 @@ func isDayTime(date: Date, response: WeatherData) -> Int {
 }
 
 func loadCurrentWeather(_ response: WeatherData) -> CurrentWeather {
+    let isDay = isDayTime(date: Date(), response: response)
     return CurrentWeather(
         dayName: getWeekdayName(from: response.current.time),
         date: getCurrentShortDateString(from: response.current.time),
         temperature: response.current.temperature_2m,
         temperatureUnit: response.current_units.temperature_2m,
-        weatherName: getWeatherName(code: response.current.weather_code),
-        weatherIconName: getWeatherIconName(code: response.current.weather_code, isDay: response.current.is_day))
+        weatherName: getWeatherName(code: response.current.weather_code, isDay: isDay),
+        weatherIconName: getWeatherIconName(code: response.current.weather_code, isDay: isDay))
         
 }
 
