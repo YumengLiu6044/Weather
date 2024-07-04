@@ -6,11 +6,16 @@
 //
 
 import SwiftUI
-import OpenMeteoSdk
+import CoreLocation
+
 
 struct WeatherView: View {
-    var response: WeatherData
-    var cityName: String = "Your location"
+    
+    var weatherManager = WeatherManager()
+    var location: CLLocationCoordinate2D
+
+    @State private var response : WeatherData?
+    @State private var cityName: String = "Your location"
     @State private var hourWeatherArray: [HourWeatherItem] = [
         HourWeatherItem(hour: "Now", weatherIconName: "", temperature: 32, temperatureUnit: "°C"),
         HourWeatherItem(hour: "10AM", weatherIconName: "", temperature: 36, temperatureUnit: "°C"),
@@ -34,19 +39,19 @@ struct WeatherView: View {
     @State private var currentWeather: CurrentWeather = CurrentWeather(dayName: "Wednesday", date: "Jul 3", temperature: 36, temperatureUnit: "°C", weatherIconName: "http://openweathermap.org/img/wn/01d@2x.png")
     
     @State private var isVisible = false
+    @State private var isLoading = true
+    @State private var isDay = true
     
     var body: some View {
         ZStack {
             Rectangle()
                 .ignoresSafeArea()
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .foregroundStyle(.linearGradient(colors: [.blue, .blue.opacity(1)], startPoint: .top, endPoint: .bottom))
+                .foregroundStyle(.linearGradient(colors: [isDay ? .blue : .black, .blue.opacity(1)], startPoint: .top, endPoint: .bottom))
                 .background(Color(hue: 0.1, saturation: 0.1, brightness: 0))
             
             if isVisible {
                 VStack(spacing: 20) {
-                    
-                    
                     Text(cityName)
                         .font(.system(size: 50))
                         .fontWeight(.semibold)
@@ -77,7 +82,7 @@ struct WeatherView: View {
                     .transition(.slide)
                     
                     ScrollView(.vertical) {
-                        VStack(spacing: 15) {
+                        VStack(spacing: 10) {
                             ForEach(dayWeatherArray) {
                                 day in
                                 DayWeatherRowView(dayWeatherItem: day)
@@ -100,14 +105,32 @@ struct WeatherView: View {
                 .transition(.blurReplace)
             }
             
+            
         }
+        .redacted(reason: isLoading ? .placeholder : [])
         .onAppear {
             withAnimation {
                 isVisible = true
             }
-            currentWeather = loadCurrentWeather(response)
-            hourWeatherArray = loadHourWeather(response)
-            dayWeatherArray = loadDailyWeather(response)
+        }
+        .task {
+            do {
+                response = try await weatherManager.getCurrentWeather(latitude: location.latitude, longitude: location.longitude)
+                
+            } catch networkingError.responseError{
+                print("Response Error")
+            } catch networkingError.dataError {
+                print("Data error")
+            } catch {
+                print("Unexpected error")
+            }
+            if let response = response{
+                currentWeather = loadCurrentWeather(response)
+                hourWeatherArray = loadHourWeather(response)
+                dayWeatherArray = loadDailyWeather(response)
+            }
+            isLoading = false
+            isDay = (isDayTime(date: Date()) != 0)
         }
         
     }
@@ -116,5 +139,6 @@ struct WeatherView: View {
 
 
 //#Preview {
-//    WeatherView()
+//    let loc = CLLocationCoordinate2D(latitude: 37, longitude: -121)
+//    WeatherView(location: loc)
 //}

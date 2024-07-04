@@ -10,6 +10,8 @@ import SwiftUI
 struct CurrentWeatherView: View {
     var currentWeather = CurrentWeather(dayName: "Wednesday", date: "Jul 3", temperature: 36, temperatureUnit: "°C", weatherIconName: "http://openweathermap.org/img/wn/01d@2x.png")
     @State private var isLoading = true
+    @State private var currentTime = "23:59"
+    @State var timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     
     var body: some View {
         VStack {
@@ -51,9 +53,11 @@ struct CurrentWeatherView: View {
                 }
                 Spacer()
                 VStack{
-                    Text(currentWeather.dayName + "\n" + currentWeather.date)
-                    
+                    Text(currentTime + "  " + currentWeather.dayName + "\n" + currentWeather.date)
                         .font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
+                        .onReceive(timer) { _ in
+                            self.currentTime = getHourAndMinute(from: Date())
+                        }
                 }
                 .multilineTextAlignment(.trailing)
             }

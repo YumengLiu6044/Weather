@@ -7,47 +7,21 @@
 
 import Foundation
 import SwiftUI
-import OpenMeteoSdk
 
 
 struct ContentView: View {
     @StateObject var locationManager = LocationManager()
-    var weatherManager = WeatherManager()
-    @State var weather : WeatherData?
+    
     var body: some View {
         VStack {
             if let location = locationManager.location {
-                if let weather = weather {
-                    WeatherView(response: weather)
-                }
-                else {
-                    LoadingView()
-                        .task {
-                            do {
-                                weather = try await weatherManager.getCurrentWeather(latitude: location.latitude, longitude: location.longitude)
-                                
-                            } catch networkingError.responseError{
-                                print("Response Error")
-                            } catch networkingError.dataError {
-                                print("Data error")
-                            } catch {
-                                print("Unexpected error")
-                            }
-                            
-                        }
-                }
+                WeatherView(location: location)
                     
             }
             else
             {
-                if locationManager.isLoading{
-                    LoadingView()
-                
-                }
-                else {
-                    WelcomeView()
-                        .environmentObject(locationManager)
-                }
+                WelcomeView()
+                    .environmentObject(locationManager)
             }
             
             
