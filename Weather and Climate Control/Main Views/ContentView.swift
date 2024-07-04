@@ -14,9 +14,8 @@ struct ContentView: View {
     
     var body: some View {
         VStack {
-            if let location = locationManager.location {
-                WeatherView(location: location)
-                    
+            if let location = locationManager.location, let locality = locationManager.locality, let administrativeArea = locationManager.administrativeArea {
+                WeatherView(location: location, cityName: "\(locality), \(administrativeArea)")
             }
             else
             {

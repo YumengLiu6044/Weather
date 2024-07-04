@@ -12,9 +12,9 @@ struct WeatherView: View {
     
     var weatherManager = WeatherManager()
     var location: CLLocationCoordinate2D
-
+    @State var cityName: String = "Your location"
+    
     @State private var response: WeatherData?
-    @State private var cityName: String = "Your location"
     @State private var hourWeatherArray: [HourWeatherItem] = [
         HourWeatherItem(hour: "Now", weatherIconName: "", temperature: 32, temperatureUnit: "°C"),
         HourWeatherItem(hour: "10AM", weatherIconName: "", temperature: 36, temperatureUnit: "°C"),
@@ -139,7 +139,4 @@ struct AnimatedLinearGradient: View {
     }
 }
 
-//#Preview {
-//    let loc = CLLocationCoordinate2D(latitude: 37, longitude: -121)
-//    WeatherView(location: loc)
-//}
+
