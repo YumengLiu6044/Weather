@@ -62,7 +62,7 @@ struct CurrentWeatherView: View {
                 .backgroundStyle(.ultraThinMaterial)
                 .clipShape(.rect(cornerRadius: 10))
                 Spacer()
-                VStack{
+                VStack(alignment: .trailing){
                     Text(currentTime)
                         .onReceive(timer) { _ in
                             self.currentTime = getHourAndMinute(from: Date())
