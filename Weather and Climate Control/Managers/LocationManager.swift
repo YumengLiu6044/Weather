@@ -12,8 +12,8 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate{
     
     let manager = CLLocationManager()
     
-    @Published var locality : String?
-    @Published var administrativeArea : String?
+    @Published var locality : String = ""
+    @Published var administrativeArea : String = ""
     @Published var location: CLLocationCoordinate2D?
     @Published var isLoading = false
     
@@ -27,13 +27,6 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate{
     func requestLocation() {
         isLoading = true
         manager.requestLocation()
-        lookUpCurrentLocation { placemark in
-          if let placemark = placemark {
-            // Access placemark information like locality (city), administrativeArea (state), etc.
-              self.locality = placemark.locality ?? "Unknown locality"
-              self.administrativeArea = placemark.administrativeArea ?? "Unknown administrative area"
-          }
-        }
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {

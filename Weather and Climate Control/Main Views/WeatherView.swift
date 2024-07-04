@@ -12,8 +12,10 @@ struct WeatherView: View {
     
     var weatherManager = WeatherManager()
     var location: CLLocationCoordinate2D
-    @State var cityName: String = "Your location"
     
+    @EnvironmentObject var locationManager: LocationManager
+    
+    @State private var cityName: String = "Your location"
     @State private var response: WeatherData?
     @State private var hourWeatherArray: [HourWeatherItem] = [
         HourWeatherItem(hour: "Now", weatherIconName: "", temperature: 32, temperatureUnit: "°C"),
@@ -109,6 +111,17 @@ struct WeatherView: View {
         .task {
             do {
                 response = try await weatherManager.getCurrentWeather(latitude: location.latitude, longitude: location.longitude)
+                locationManager.lookUpCurrentLocation {
+                    placemark in
+                    
+                    if let placemark = placemark {
+                        // Access placemark information like locality (city), administrativeArea (state), etc.
+                        if let locality = placemark.locality, let administrativeArea = placemark.administrativeArea {
+                            cityName = "\(locality), \(administrativeArea)"
+                        }
+                      }
+                }
+                
                 
             } catch networkingError.responseError {
                 print("Response Error")
