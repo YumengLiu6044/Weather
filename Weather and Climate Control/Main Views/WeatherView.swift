@@ -47,12 +47,8 @@ struct WeatherView: View {
     
     var body: some View {
         ZStack {
-            Rectangle()
+            AnimatedLinearGradient(isDay: $isDay)
                 .ignoresSafeArea()
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .foregroundStyle(.linearGradient(colors: [isDay ? .blue : .black, .blue.opacity(1)], startPoint: .top, endPoint: .bottom))
-                .background(Color(hue: 0.1, saturation: 0.1, brightness: 0))
-                .transition(.slide)
             
             if isVisible {
                 VStack(spacing: 20) {
