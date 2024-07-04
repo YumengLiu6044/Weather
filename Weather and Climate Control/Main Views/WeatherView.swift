@@ -36,7 +36,7 @@ struct WeatherView: View {
         DayWeatherItem(dayName: "Monday", maxTemperature: 30, minTemperature: 12, temperatureUnit: "°C", weatherIconName: ""),
         DayWeatherItem(dayName: "Tuesday", maxTemperature: 32, minTemperature: 13, temperatureUnit: "°C", weatherIconName: "")
     ]
-    @State private var currentWeather: CurrentWeather = CurrentWeather(dayName: "Wednesday", date: "Jul 3", temperature: 36, temperatureUnit: "°C", weatherIconName: "http://openweathermap.org/img/wn/01d@2x.png")
+    @State private var currentWeather: CurrentWeather = CurrentWeather(dayName: "Wednesday", date: "Jul 3", temperature: 36, temperatureUnit: "°C", weatherName: "Sunny", weatherIconName: "http://openweathermap.org/img/wn/01d@2x.png")
     
     @State private var isVisible = false
     @State private var isLoading = true

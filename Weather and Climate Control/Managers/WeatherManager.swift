@@ -64,6 +64,15 @@ func getWeatherIconName(code: Int, isDay: Int) -> String {
     }
     return "None"
 }
+
+func getWeatherName(code: Int) -> String {
+    if let weatherData = weatherCodeIconMapping[String(code)],
+       let dayData = weatherData["day"],
+        let description = dayData["description"] {
+        return description
+    }
+    return "None"
+}
 // Model of the response body we get from calling the API
 
 struct WeatherData: Codable {
@@ -135,7 +144,9 @@ func loadCurrentWeather(_ response: WeatherData) -> CurrentWeather {
         date: getCurrentShortDateString(from: response.current.time),
         temperature: response.current.temperature_2m,
         temperatureUnit: response.current_units.temperature_2m,
+        weatherName: getWeatherName(code: response.current.weather_code),
         weatherIconName: getWeatherIconName(code: response.current.weather_code, isDay: response.current.is_day))
+        
 }
 
 func isSameDateAndHour(date1: Date, date2: Date) -> Bool {
@@ -173,7 +184,7 @@ func loadHourWeather(_ response: WeatherData) -> [HourWeatherItem] {
     
     for i in 0...23 {
         hourArray.append(HourWeatherItem(
-            hour: getHourinAMPMFormat(from: hourlyData.time[i + hourStartIndex]),
+            hour: (i == 0) ? "Now": getHourinAMPMFormat(from: hourlyData.time[i + hourStartIndex]),
             weatherIconName: getWeatherIconName(code: hourlyData.weather_code[i + hourStartIndex], isDay: isDayTime(date: hourlyData.time[i + hourStartIndex])),
             temperature: hourlyData.temperature_2m[i + hourStartIndex],
             temperatureUnit: response.hourly_units.temperature_2m

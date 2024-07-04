@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct CurrentWeatherView: View {
-    var currentWeather = CurrentWeather(dayName: "Wednesday", date: "Jul 3", temperature: 36, temperatureUnit: "°C", weatherIconName: "http://openweathermap.org/img/wn/01d@2x.png")
+    var currentWeather = CurrentWeather(dayName: "Wednesday", date: "Jul 3", temperature: 36, temperatureUnit: "°C", weatherName: "Sunny", weatherIconName: "http://openweathermap.org/img/wn/01d@2x.png")
     @State private var isLoading = true
     @State private var currentTime = "23:59"
     @State var timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
@@ -22,7 +22,7 @@ struct CurrentWeatherView: View {
                         case .success(let image):
                             image.resizable()
                                 .aspectRatio(contentMode: .fit)
-                                .frame(width: 100)
+                                .frame(width: 60)
                                 .onAppear {
                                     isLoading = false
                                 }
@@ -30,14 +30,14 @@ struct CurrentWeatherView: View {
                         case .failure:
                             Image(systemName: "questionmark.app")
                                 .aspectRatio(contentMode: .fit)
-                                .frame(width: 100)
+                                .frame(width: 60)
                                 .onAppear {
                                     isLoading = false
                                 }
                             
                         case .empty:
                             ProgressView()
-                                .padding(.bottom, 5)
+                                .frame(width: 60)
                                 .onAppear {
                                     isLoading = true
                                 }
@@ -48,9 +48,18 @@ struct CurrentWeatherView: View {
                                     isLoading = false
                                 }
                         }}
+                    .padding([.top, .bottom, .trailing], 3.0)
                     
-                    Text(currentWeather.presentTemperature())
+                    HStack {
+                        Text(currentWeather.weatherName)
+                        Text(currentWeather.presentTemperature())
+                    }
+                        .font(.body)
                 }
+                .padding()
+                .background()
+                .backgroundStyle(.ultraThinMaterial)
+                .clipShape(.rect(cornerRadius: 10))
                 Spacer()
                 VStack{
                     Text(currentTime + "  " + currentWeather.dayName + "\n" + currentWeather.date)
@@ -76,6 +85,7 @@ struct CurrentWeather {
     let date: String
     let temperature: Float
     let temperatureUnit: String
+    let weatherName: String
     let weatherIconName: String
     
     func presentTemperature() -> String {
