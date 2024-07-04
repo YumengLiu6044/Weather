@@ -9,8 +9,10 @@ class WeatherManager {
     // HTTP request to get the current weather depending on the coordinates we got from LocationManager
     func getCurrentWeather(latitude: CLLocationDegrees, longitude: CLLocationDegrees) async throws -> WeatherData {
         let localTimeZoneIdentifier: String = TimeZone.current.identifier
-        let timeZoneComponents: [String] = localTimeZoneIdentifier.components(separatedBy: "/")
-        guard let url = URL(string: "https://api.open-meteo.com/v1/forecast?latitude=\(latitude)&longitude=\(longitude)&current=temperature_2m,is_day,weather_code&hourly=temperature_2m,weather_code&daily=weather_code,temperature_2m_max,temperature_2m_min,sunset,sunrise&timeformat=unixtime&timezone=\(timeZoneComponents[0])%2F\(timeZoneComponents[1])&format=json") else { fatalError("Missing URL") }
+        guard let encodedTimeZone = localTimeZoneIdentifier.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
+        let url = URL(string: "https://api.open-meteo.com/v1/forecast?latitude=\(latitude)&longitude=\(longitude)&current=temperature_2m,is_day,weather_code&hourly=temperature_2m,weather_code&daily=weather_code,temperature_2m_max,temperature_2m_min,sunset,sunrise&timeformat=unixtime&timezone=\(encodedTimeZone)&format=json") else {
+                    fatalError("Missing or invalid URL")
+                }
         
         let (data, response) = try await URLSession.shared.data(from: url)
         guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
@@ -125,12 +127,7 @@ func getHourAndMinute(from date: Date) -> String {
 
 func getWeatherIconName(code: Int, isDay: Int) -> String {
     let timeOfDay = (isDay == 1) ? "day" : "night"
-    if let weatherData = weatherCodeIconMapping[String(code)],
-       let timeData = weatherData[timeOfDay],
-       let imageName = timeData["image"] {
-        return "https://openweathermap.org/img/wn/" + imageName
-    }
-    return "None"
+        return weatherCodeIconMapping[String(code)]?[timeOfDay]?["image"].flatMap { "https://openweathermap.org/img/wn/" + $0 } ?? "None"
 }
 
 func getWeatherName(code: Int) -> String {

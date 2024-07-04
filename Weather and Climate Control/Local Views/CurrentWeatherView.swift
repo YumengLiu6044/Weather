@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct CurrentWeatherView: View {
-    var currentWeather = CurrentWeather(dayName: "Wednesday", date: "Jul 3", temperature: 36, temperatureUnit: "°C", weatherName: "Sunny", weatherIconName: "http://openweathermap.org/img/wn/01d@2x.png")
+    var currentWeather = CurrentWeather(dayName: "Wednesday", date: "Jul 3", temperature: 36, temperatureUnit: "°C", weatherName: "Sunny", weatherIconName: "https://openweathermap.org/img/wn/01d@2x.png")
     @State private var isLoading = true
     @State private var currentTime = "23:59"
     @State var timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
