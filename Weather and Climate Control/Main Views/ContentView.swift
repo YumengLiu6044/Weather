@@ -25,7 +25,8 @@ struct ContentView: View {
             }
             
         }
-        
+        .foregroundStyle(.linearGradient(colors: [.blue, .blue.opacity(0.9)], startPoint: .top, endPoint: .bottom))
+        .background(Color(hue: 0.1, saturation: 0.1, brightness: 0))
     }
 }
 
