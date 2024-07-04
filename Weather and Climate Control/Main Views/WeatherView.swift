@@ -51,6 +51,7 @@ struct WeatherView: View {
             if isVisible {
                 VStack(spacing: 20) {
                     Text(cityName)
+                        .redacted(reason: isLoading ? .placeholder : [])
                         .font(.system(size: 50))
                         .fontWeight(.semibold)
                         .foregroundStyle(Color(.white))
