@@ -8,12 +8,13 @@
 import SwiftUI
 import CoreLocation
 
+
 struct WeatherView: View {
     
     var weatherManager = WeatherManager()
     var location: CLLocationCoordinate2D
 
-    @State private var response: WeatherData?
+    @State private var response : WeatherData?
     @State private var cityName: String = "Your location"
     @State private var hourWeatherArray: [HourWeatherItem] = [
         HourWeatherItem(hour: "Now", weatherIconName: "", temperature: 32, temperatureUnit: "°C"),
@@ -43,8 +44,12 @@ struct WeatherView: View {
     
     var body: some View {
         ZStack {
-            AnimatedLinearGradient(isDay: $isDay)
+            Rectangle()
                 .ignoresSafeArea()
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .foregroundStyle(.linearGradient(colors: [isDay ? .blue : .black, .blue.opacity(1)], startPoint: .top, endPoint: .bottom))
+                .background(Color(hue: 0.1, saturation: 0.1, brightness: 0))
+                .transition(.slide)
             
             if isVisible {
                 VStack(spacing: 20) {
@@ -66,6 +71,7 @@ struct WeatherView: View {
                                         content
                                             .opacity(phase.isIdentity ? 1 : 0)
                                     }
+                                
                             }
                         }
                         .scrollTargetLayout()
@@ -99,6 +105,8 @@ struct WeatherView: View {
                 .padding(20.0)
                 .transition(.blurReplace)
             }
+            
+            
         }
         .redacted(reason: isLoading ? .placeholder : [])
         .onAppear {
@@ -110,14 +118,14 @@ struct WeatherView: View {
             do {
                 response = try await weatherManager.getCurrentWeather(latitude: location.latitude, longitude: location.longitude)
                 
-            } catch networkingError.responseError {
+            } catch networkingError.responseError{
                 print("Response Error")
             } catch networkingError.dataError {
                 print("Data error")
             } catch {
                 print("Unexpected error")
             }
-            if let response = response {
+            if let response = response{
                 currentWeather = loadCurrentWeather(response)
                 hourWeatherArray = loadHourWeather(response)
                 dayWeatherArray = loadDailyWeather(response)
@@ -127,17 +135,11 @@ struct WeatherView: View {
                 isDay = (isDayTime(date: Date(), response: response) == 1)
             }
         }
+        
     }
+    
 }
 
-struct AnimatedLinearGradient: View {
-    @Binding var isDay: Bool
-
-    var body: some View {
-        LinearGradient(colors: [isDay ? .blue : .black, isDay ? .blue.opacity(0.5) : .black.opacity(0.9)], startPoint: .top, endPoint: .bottom)
-            .animation(.easeInOut(duration: 1), value: isDay)
-    }
-}
 
 //#Preview {
 //    let loc = CLLocationCoordinate2D(latitude: 37, longitude: -121)

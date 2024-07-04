@@ -17,8 +17,8 @@ struct WelcomeView: View {
             Rectangle()
                 .ignoresSafeArea()
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .foregroundStyle(.linearGradient(colors: [.blue, .blue.opacity(0.5)], startPoint: .top, endPoint: .bottom))
-                
+                .foregroundStyle(.linearGradient(colors: [.blue, .blue.opacity(0.9)], startPoint: .top, endPoint: .bottom))
+                .background(Color(hue: 0.1, saturation: 0.1, brightness: 0))
             VStack {
                 Text("Welcome to Yumeng's Weather App")
                     .font(.system(size: 40))
