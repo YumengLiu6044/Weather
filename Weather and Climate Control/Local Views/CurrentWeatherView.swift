@@ -23,6 +23,7 @@ struct CurrentWeatherView: View {
                             image.resizable()
                                 .aspectRatio(contentMode: .fit)
                                 .frame(width: 60)
+                                .shadow(radius: 10)
                                 .onAppear {
                                     isLoading = false
                                 }
@@ -63,7 +64,7 @@ struct CurrentWeatherView: View {
                 Spacer()
                 VStack{
                     Text(currentTime + "  " + currentWeather.dayName + "\n" + currentWeather.date)
-                        .font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
+                        .font(.system(size: 35))
                         .onReceive(timer) { _ in
                             self.currentTime = getHourAndMinute(from: Date())
                         }

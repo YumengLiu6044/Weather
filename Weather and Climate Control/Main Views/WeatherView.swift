@@ -12,6 +12,7 @@ struct WeatherView: View {
     
     var weatherManager = WeatherManager()
     var location: CLLocationCoordinate2D
+    var unitPreference: String
     
     @EnvironmentObject var locationManager: LocationManager
     
@@ -80,7 +81,7 @@ struct WeatherView: View {
                     
                     
                     ScrollView(.vertical) {
-                        VStack(spacing: 15) {
+                        VStack(spacing: 25) {
                             ForEach(dayWeatherArray) {
                                 day in
                                 DayWeatherRowView(dayWeatherItem: day)
@@ -91,6 +92,7 @@ struct WeatherView: View {
                                     }
                             }
                         }
+                        .padding(.vertical, 10)
                         .scrollTargetLayout()
                         
                     }
@@ -121,7 +123,7 @@ struct WeatherView: View {
         }
         .task {
             do {
-                response = try await weatherManager.getCurrentWeather(latitude: location.latitude, longitude: location.longitude)
+                response = try await weatherManager.getCurrentWeather(latitude: location.latitude, longitude: location.longitude, unit: unitPreference)
                 
             } catch networkingError.responseError {
                 print("Response Error")
@@ -148,7 +150,7 @@ struct AnimatedLinearGradient: View {
     @Binding var isDay: Bool
 
     var body: some View {
-        LinearGradient(colors: [isDay ? .blue : .black, isDay ? .blue.opacity(0.5) : .black.opacity(0.9)], startPoint: .top, endPoint: .bottom)
+        LinearGradient(colors: [isDay ? .blue : .black, isDay ? .blue.opacity(0.5) : .black.opacity(0.5)], startPoint: .top, endPoint: .bottom)
             .animation(.easeInOut(duration: 1), value: isDay)
     }
 }

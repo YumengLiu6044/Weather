@@ -7,10 +7,10 @@ let weatherCodeIconMapping = [
 
 class WeatherManager {
     // HTTP request to get the current weather depending on the coordinates we got from LocationManager
-    func getCurrentWeather(latitude: CLLocationDegrees, longitude: CLLocationDegrees) async throws -> WeatherData {
+    func getCurrentWeather(latitude: CLLocationDegrees, longitude: CLLocationDegrees, unit: String) async throws -> WeatherData {
         let localTimeZoneIdentifier: String = TimeZone.current.identifier
         guard let encodedTimeZone = localTimeZoneIdentifier.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
-        let url = URL(string: "https://api.open-meteo.com/v1/forecast?latitude=\(latitude)&longitude=\(longitude)&current=temperature_2m,is_day,weather_code&hourly=temperature_2m,weather_code&daily=weather_code,temperature_2m_max,temperature_2m_min,sunset,sunrise&timeformat=unixtime&timezone=\(encodedTimeZone)&format=json") else {
+        let url = URL(string: "https://api.open-meteo.com/v1/forecast?latitude=\(latitude)&longitude=\(longitude)&current=temperature_2m,is_day,weather_code&hourly=temperature_2m,weather_code&daily=weather_code,temperature_2m_max,temperature_2m_min,sunset,sunrise&timeformat=unixtime&temperature_unit=\(unit)&timezone=\(encodedTimeZone)&format=json") else {
                     fatalError("Missing or invalid URL")
                 }
         

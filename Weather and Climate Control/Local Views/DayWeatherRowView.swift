@@ -33,7 +33,8 @@ struct DayWeatherRowView: View {
                         }
                 case .empty:
                     ProgressView()
-                        .padding(.bottom, 5)
+                        .aspectRatio(contentMode: .fit)
+                        .frame(height: 40)
                         .onAppear {
                             isLoading = true
                         }
@@ -56,7 +57,7 @@ struct DayWeatherRowView: View {
             Gauge(value: normalizedTemperature(), in: 0...1) {
                 // Empty content for the label
             }
-            .frame(width: 100, height: 10)
+            .frame(width: 100, height: 8)
         }
         .redacted(reason: isLoading ? .placeholder : [])
         .gaugeStyle(.linearCapacity)
@@ -67,7 +68,7 @@ struct DayWeatherRowView: View {
         .listRowBackground(Rectangle().foregroundStyle(.ultraThinMaterial))
         .padding(.horizontal, 10.0)
         .onAppear {
-            maxTemperature = (dayWeatherItem.temperatureUnit == "°C") ? 50 : 150
+            maxTemperature = (dayWeatherItem.temperatureUnit == "°C") ? 50 : 120
         }
     }
     
