@@ -51,7 +51,7 @@ struct DayWeatherRowView: View {
             Spacer()
             
             Text(dayWeatherItem.presentTemperatureRange())
-                .font(.caption)
+                .font(.body)
             
             Gauge(value: normalizedTemperature(), in: 0...1) {
                 // Empty content for the label
@@ -65,7 +65,7 @@ struct DayWeatherRowView: View {
         .shadow(radius: 10)
         .listRowSeparator(.hidden)
         .listRowBackground(Rectangle().foregroundStyle(.ultraThinMaterial))
-        .padding()
+        .padding(.horizontal, 10.0)
         .onAppear {
             maxTemperature = (dayWeatherItem.temperatureUnit == "°C") ? 50 : 150
         }

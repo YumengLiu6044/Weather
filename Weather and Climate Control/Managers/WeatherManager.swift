@@ -206,7 +206,7 @@ func loadHourWeather(_ response: WeatherData) -> [HourWeatherItem] {
     
     for i in 0...23 {
         hourArray.append(HourWeatherItem(
-            hour: (i == 0) ? "Now": getHourinAMPMFormat(from: hourlyData.time[i + hourStartIndex]),
+            hour: getHourinAMPMFormat(from: hourlyData.time[i + hourStartIndex]),
             weatherIconName: getWeatherIconName(code: hourlyData.weather_code[i + hourStartIndex], isDay: isDayTime(date: hourlyData.time[i + hourStartIndex], response: response)),
             temperature: hourlyData.temperature_2m[i + hourStartIndex],
             temperatureUnit: response.hourly_units.temperature_2m

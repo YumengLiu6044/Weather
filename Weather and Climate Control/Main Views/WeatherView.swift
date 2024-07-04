@@ -56,7 +56,7 @@ struct WeatherView: View {
                         .fontWeight(.semibold)
                         .foregroundStyle(Color(.white))
                         .shadow(radius: 10)
-                        .transition(.slide)
+                        
                     
                     CurrentWeatherView(currentWeather: currentWeather)
                     
@@ -77,10 +77,10 @@ struct WeatherView: View {
                     .padding(10)
                     .background(.ultraThinMaterial)
                     .clipShape(.rect(cornerRadius: 10))
-                    .transition(.slide)
+                    
                     
                     ScrollView(.vertical) {
-                        VStack(spacing: 10) {
+                        VStack(spacing: 15) {
                             ForEach(dayWeatherArray) {
                                 day in
                                 DayWeatherRowView(dayWeatherItem: day)
@@ -97,7 +97,7 @@ struct WeatherView: View {
                     .scrollTargetBehavior(.viewAligned)
                     .background(.ultraThinMaterial)
                     .clipShape(.rect(cornerRadius: 10))
-                    .transition(.slide)
+                    
                 }
                 .padding(20.0)
                 .transition(.blurReplace)
