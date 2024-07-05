@@ -55,7 +55,7 @@ struct CurrentWeatherView: View {
                         Text(currentWeather.weatherName)
                         Text(currentWeather.presentTemperature())
                     }
-                        .font(.body)
+                        .font(.title2)
                 }
                 .padding()
                 .background()
