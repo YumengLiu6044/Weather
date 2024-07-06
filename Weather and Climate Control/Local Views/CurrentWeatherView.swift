@@ -56,6 +56,8 @@ struct CurrentWeatherView: View {
                         Text(currentWeather.presentTemperature())
                     }
                         .font(.title2)
+                        .scaledToFit()
+                        .minimumScaleFactor(0.5)
                 }
                 .padding()
                 .background()

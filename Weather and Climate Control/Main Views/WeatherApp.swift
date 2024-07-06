@@ -15,3 +15,4 @@ struct WeatherApp: App {
         }
     }
 }
+
