@@ -24,42 +24,6 @@ func sampleGaugesData() -> [GaugeData] {
             maximimValue: 32,
             minimunTrackValue: 11,
             maximimTrackValue: 24
-        ),
-        GaugeData(
-            minimunValue: 11,
-            maximimValue: 32,
-            minimunTrackValue: 11,
-            maximimTrackValue: 26
-        ),
-        GaugeData(
-            minimunValue: 11,
-            maximimValue: 32,
-            minimunTrackValue: 13,
-            maximimTrackValue: 26
-        ),
-        GaugeData(
-            minimunValue: 11,
-            maximimValue: 32,
-            minimunTrackValue: 16,
-            maximimTrackValue: 28
-        ),
-        GaugeData(
-            minimunValue: 11,
-            maximimValue: 32,
-            minimunTrackValue: 14,
-            maximimTrackValue: 28
-        ),
-        GaugeData(
-            minimunValue: 11,
-            maximimValue: 32,
-            minimunTrackValue: 15,
-            maximimTrackValue: 29
-        ),
-        GaugeData(
-            minimunValue: 11,
-            maximimValue: 32,
-            minimunTrackValue: 16,
-            maximimTrackValue: 32
         )
     ])
     return data
