@@ -66,7 +66,7 @@ struct DayWeatherRowView: View {
         .listRowBackground(Rectangle().foregroundStyle(.ultraThinMaterial))
         .padding(.horizontal, 10.0)
         .onAppear {
-            maxTemperature = (dayWeatherItem.temperatureUnit == "°C") ? 45 : 100
+            maxTemperature = (dayWeatherItem.temperatureUnit == "°C") ? 42 : 100
             minTemperature = (dayWeatherItem.temperatureUnit == "°C") ? 11 : 50
         }
     }
