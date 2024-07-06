@@ -70,7 +70,7 @@ struct HourWeatherItem : Identifiable {
     let temperatureUnit: String
     
     func presentTemperature() -> String {
-        return "\(temperature) \(temperatureUnit)"
+        return "\(temperature)°"
     }
     
 }

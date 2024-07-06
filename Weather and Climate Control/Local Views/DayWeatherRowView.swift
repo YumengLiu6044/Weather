@@ -88,10 +88,6 @@ struct DayWeatherItem: Identifiable {
     func getAverageTemperature() -> Double {
         return (maxTemperature * 0.5 + minTemperature * 0.5)
     }
-    
-    func presentTemperatureRange() -> String {
-        return "\(round(minTemperature * 10) / 10)\(temperatureUnit)-\(round(maxTemperature * 10) / 10)\(temperatureUnit)"
-            }
 }
 
 #Preview {

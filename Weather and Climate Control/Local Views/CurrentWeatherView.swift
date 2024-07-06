@@ -95,7 +95,7 @@ struct CurrentWeather {
     let weatherIconName: String
     
     func presentTemperature() -> String {
-        return "\(temperature) \(temperatureUnit)"
+        return "\(temperature)°"
     }
 }
 
