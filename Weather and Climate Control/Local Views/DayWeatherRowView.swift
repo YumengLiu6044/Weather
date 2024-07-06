@@ -10,7 +10,9 @@ import SwiftUI
 struct DayWeatherRowView: View {
     var dayWeatherItem: DayWeatherItem = DayWeatherItem(dayName: "Monday", maxTemperature: 42, minTemperature: 18, temperatureUnit: "°C", weatherIconName: "")
     
-    @State private var maxTemperature: Double = 50  // Default value
+    @State private var maxTemperature: Double = 42
+    @State private var minTemperature: Double = 10
+    
     @State private var isLoading = true
     
     var body: some View {
@@ -51,13 +53,9 @@ struct DayWeatherRowView: View {
             
             Spacer()
             
-            Text(dayWeatherItem.presentTemperatureRange())
-                .font(.body)
-            
-            Gauge(value: normalizedTemperature(), in: 0...1) {
-                // Empty content for the label
-            }
-            .frame(width: 100, height: 8)
+            GaugeRow(gaugeData: GaugeData(minimunValue: self.minTemperature, maximimValue: self.maxTemperature, minimunTrackValue: dayWeatherItem.minTemperature, maximimTrackValue: dayWeatherItem.maxTemperature))
+                .frame(width: 200, height: 5)
+                .redacted(reason: isLoading ? .placeholder : [])
         }
         .redacted(reason: isLoading ? .placeholder : [])
         .gaugeStyle(.linearCapacity)
@@ -68,7 +66,8 @@ struct DayWeatherRowView: View {
         .listRowBackground(Rectangle().foregroundStyle(.ultraThinMaterial))
         .padding(.horizontal, 10.0)
         .onAppear {
-            maxTemperature = (dayWeatherItem.temperatureUnit == "°C") ? 50 : 120
+            maxTemperature = (dayWeatherItem.temperatureUnit == "°C") ? 45 : 100
+            minTemperature = (dayWeatherItem.temperatureUnit == "°C") ? 11 : 50
         }
     }
     

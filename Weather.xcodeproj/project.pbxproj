@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E2628EFF2C39F5A2002FAF96 /* GaugeData.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2628EFE2C39F5A2002FAF96 /* GaugeData.swift */; };
+		E2628F012C39F5F3002FAF96 /* GaugeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2628F002C39F5F3002FAF96 /* GaugeView.swift */; };
+		E2628F032C39F632002FAF96 /* GuageBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2628F022C39F632002FAF96 /* GuageBackgroundView.swift */; };
+		E2628F052C39F666002FAF96 /* GaugeRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2628F042C39F666002FAF96 /* GaugeRowView.swift */; };
 		E27B07012C35AB1A007C439E /* HourRowItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E27B07002C35AB1A007C439E /* HourRowItemView.swift */; };
 		E27B07052C35C430007C439E /* DayWeatherRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E27B07042C35C430007C439E /* DayWeatherRowView.swift */; };
 		E27B07072C35C787007C439E /* CurrentWeatherView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E27B07062C35C787007C439E /* CurrentWeatherView.swift */; };
@@ -38,6 +42,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		E2628EFE2C39F5A2002FAF96 /* GaugeData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GaugeData.swift; sourceTree = "<group>"; };
+		E2628F002C39F5F3002FAF96 /* GaugeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GaugeView.swift; sourceTree = "<group>"; };
+		E2628F022C39F632002FAF96 /* GuageBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuageBackgroundView.swift; sourceTree = "<group>"; };
+		E2628F042C39F666002FAF96 /* GaugeRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GaugeRowView.swift; sourceTree = "<group>"; };
 		E27B07002C35AB1A007C439E /* HourRowItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HourRowItemView.swift; sourceTree = "<group>"; };
 		E27B07042C35C430007C439E /* DayWeatherRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayWeatherRowView.swift; sourceTree = "<group>"; };
 		E27B07062C35C787007C439E /* CurrentWeatherView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentWeatherView.swift; sourceTree = "<group>"; };
@@ -79,6 +87,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		E2628EFD2C39F565002FAF96 /* Gauge View */ = {
+			isa = PBXGroup;
+			children = (
+				E2628EFE2C39F5A2002FAF96 /* GaugeData.swift */,
+				E2628F002C39F5F3002FAF96 /* GaugeView.swift */,
+				E2628F022C39F632002FAF96 /* GuageBackgroundView.swift */,
+				E2628F042C39F666002FAF96 /* GaugeRowView.swift */,
+			);
+			path = "Gauge View";
+			sourceTree = "<group>";
+		};
 		E2E2FE212C34534B0048DF0B = {
 			isa = PBXGroup;
 			children = (
@@ -100,6 +119,7 @@
 		E2E2FE2C2C34534B0048DF0B /* Weather and Climate Control */ = {
 			isa = PBXGroup;
 			children = (
+				E2628EFD2C39F565002FAF96 /* Gauge View */,
 				E2E499EC2C3621E1000471A3 /* Main Views */,
 				E2E499EB2C3621AB000471A3 /* Local Views */,
 				E2E499EA2C36218F000471A3 /* Managers */,
@@ -285,10 +305,14 @@
 				E2B9A06C2C34BE4A0069E7BE /* LocationManager.swift in Sources */,
 				E27B07052C35C430007C439E /* DayWeatherRowView.swift in Sources */,
 				E2B9A0702C34CAB80069E7BE /* WelcomeView.swift in Sources */,
+				E2628EFF2C39F5A2002FAF96 /* GaugeData.swift in Sources */,
+				E2628F052C39F666002FAF96 /* GaugeRowView.swift in Sources */,
+				E2628F032C39F632002FAF96 /* GuageBackgroundView.swift in Sources */,
 				E27B07072C35C787007C439E /* CurrentWeatherView.swift in Sources */,
 				E2B9A06E2C34CA5D0069E7BE /* ContentView.swift in Sources */,
 				E2B9A0742C34E9B10069E7BE /* WeatherManager.swift in Sources */,
 				E2E2FE302C34534B0048DF0B /* WeatherView.swift in Sources */,
+				E2628F012C39F5F3002FAF96 /* GaugeView.swift in Sources */,
 				E2E2FE2E2C34534B0048DF0B /* WeatherApp.swift in Sources */,
 				E27B07012C35AB1A007C439E /* HourRowItemView.swift in Sources */,
 			);

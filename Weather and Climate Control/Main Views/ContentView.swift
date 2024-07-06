@@ -15,7 +15,7 @@ struct ContentView: View {
     var body: some View {
         VStack {
             if let location = locationManager.location {
-                WeatherView(location: location, unitPreference: "fahrenheit")
+                WeatherView(location: location, unitPreference: "celsius")
                     .environmentObject(locationManager)
             }
             else
