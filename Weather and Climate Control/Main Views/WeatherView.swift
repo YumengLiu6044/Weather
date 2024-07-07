@@ -19,7 +19,7 @@ struct WeatherView: View {
     @EnvironmentObject var locationManager: LocationManager
     
     @State private var response: WeatherData?
-    @State private var cityName: String = "Your location"
+    @State private var cityName: String     =   ""
     
     @State private var hourWeatherArray     =   SampleData.sampleHourWeatherArray
     @State private var dayWeatherArray      =   SampleData.sampleDayWeatherArray
