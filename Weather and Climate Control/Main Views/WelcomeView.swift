@@ -36,9 +36,8 @@ struct WelcomeView: View {
                     LocationButton(.shareCurrentLocation) {
                         locationManager.requestLocation()
                     }
-                    .tint(Color.cyan.gradient)
+                    .tint(.gray)
                     .clipShape(Capsule())
-                    
                     
                 }
                 .foregroundStyle(Color(.white))

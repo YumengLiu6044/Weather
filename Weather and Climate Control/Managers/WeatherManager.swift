@@ -222,7 +222,7 @@ func loadDailyWeather(_ response: WeatherData) -> [DayWeatherItem] {
     
     for i in 0..<dailyData.time.count {
         dayArray.append(DayWeatherItem(
-            dayName: getWeekdayName(from: dailyData.time[i]),
+            dayName: (i == 0) ? "Today" : getWeekdayName(from: dailyData.time[i]),
             maxTemperature: dailyData.temperature_2m_max[i],
             minTemperature: dailyData.temperature_2m_min[i],
             temperatureUnit: response.daily_units.temperature_2m_min,
