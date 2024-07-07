@@ -29,8 +29,9 @@ struct DayWeatherRowView: View {
             Spacer()
             
             GaugeRow(gaugeData: GaugeData(minimunValue: self.minTemperature, maximimValue: self.maxTemperature, minimunTrackValue: dayWeatherItem.minTemperature, maximimTrackValue: dayWeatherItem.maxTemperature))
-                .frame(width: 200, height: 5)
+                .frame(width: 200, height: 10)
                 .shimmering(active: isLoading)
+                
                 
         }
         .redacted(reason: isLoading ? .placeholder : [])
