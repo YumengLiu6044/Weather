@@ -1,4 +1,6 @@
 A weather app that queries the open-meteo API and displays the information
 
-<img src="https://github.com/YumengLiu6044/Weather/assets/73615283/77f56f54-0fbb-4f46-a36d-41f922f69d77" width=30%>
+
+
+https://github.com/YumengLiu6044/Weather/assets/73615283/dd682d10-59cf-4e79-b3cd-94f2014b03c4
 
