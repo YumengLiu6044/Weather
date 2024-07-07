@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Shimmer
 
 struct HourRowItemView: View {
     
@@ -15,10 +16,13 @@ struct HourRowItemView: View {
     var body: some View {
         VStack{
             Text(hourWeatherItem.hour)
+                .shimmering(active: isLoading)
 
             OnlineImageView(imageURL: hourWeatherItem.weatherIconName, isLoading: $isLoading)
                 .frame(width:50)
+                
             Text(hourWeatherItem.presentTemperature())
+                .shimmering(active: isLoading)
             
         }
         .redacted(reason: isLoading ? .placeholder : [])
@@ -34,5 +38,5 @@ struct HourRowItemView: View {
 
 #Preview {
     HourRowItemView()
-        
+        .preferredColorScheme(.dark)
 }

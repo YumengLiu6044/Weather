@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Shimmer
 
 struct DayWeatherRowView: View {
     var dayWeatherItem: DayWeatherItem = SampleData.sampleDayWeatherArray[0]
@@ -23,12 +24,14 @@ struct DayWeatherRowView: View {
             .padding(.trailing, 10.0)
             
             Text(dayWeatherItem.dayName)
+                .shimmering(active: isLoading)
             
             Spacer()
             
             GaugeRow(gaugeData: GaugeData(minimunValue: self.minTemperature, maximimValue: self.maxTemperature, minimunTrackValue: dayWeatherItem.minTemperature, maximimTrackValue: dayWeatherItem.maxTemperature))
                 .frame(width: 200, height: 5)
-                .redacted(reason: isLoading ? .placeholder : [])
+                .shimmering(active: isLoading)
+                
         }
         .redacted(reason: isLoading ? .placeholder : [])
         .font(.title2)

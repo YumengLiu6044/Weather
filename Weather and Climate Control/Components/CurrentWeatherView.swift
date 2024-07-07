@@ -9,9 +9,10 @@ import SwiftUI
 
 struct CurrentWeatherView: View {
     var currentWeather = SampleData.sampleCurrentWeather
-    @State private var isLoading = true
-    @State private var currentTime = "23:59"
-    @State var timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+    
+    @State private var isLoading    = true
+    @State private var currentTime  = "23:59"
+    @State private var timer        = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     
     var body: some View {
         VStack {
@@ -25,15 +26,19 @@ struct CurrentWeatherView: View {
                         Text(currentWeather.weatherName)
                         Text(currentWeather.presentTemperature())
                     }
-                        .font(.title2)
-                        .scaledToFit()
-                        .minimumScaleFactor(0.5)
+                    .shimmering(active: isLoading)
+                    .font(.title2)
+                    .scaledToFit()
+                    .minimumScaleFactor(0.5)
                 }
                 .padding()
                 .background()
                 .backgroundStyle(.ultraThinMaterial)
                 .clipShape(.rect(cornerRadius: 10))
+                
+                
                 Spacer()
+                
                 VStack(alignment: .trailing){
                     Text(currentTime)
                         .onReceive(timer) { _ in
@@ -45,9 +50,9 @@ struct CurrentWeatherView: View {
                 }
                 .font(.system(size: 35))
                 .frame(alignment: .trailing)
+                .shimmering(active: isLoading)
             }
                 
-            
         }
         .redacted(reason: isLoading ? .placeholder : [])
         .font(.system(size: 40))

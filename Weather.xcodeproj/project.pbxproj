@@ -14,6 +14,7 @@
 		E27B07012C35AB1A007C439E /* HourRowItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E27B07002C35AB1A007C439E /* HourRowItemView.swift */; };
 		E27B07052C35C430007C439E /* DayWeatherRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E27B07042C35C430007C439E /* DayWeatherRowView.swift */; };
 		E27B07072C35C787007C439E /* CurrentWeatherView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E27B07062C35C787007C439E /* CurrentWeatherView.swift */; };
+		E29ADE4F2C3B520900E847C1 /* Shimmer in Frameworks */ = {isa = PBXBuildFile; productRef = E29ADE4E2C3B520900E847C1 /* Shimmer */; };
 		E2B5F0FA2C3AE99800B76037 /* OnlineImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2B5F0F92C3AE99800B76037 /* OnlineImageView.swift */; };
 		E2B5F0FC2C3AECF600B76037 /* SampleData.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2B5F0FB2C3AECF600B76037 /* SampleData.swift */; };
 		E2B5F0FF2C3AEDF400B76037 /* WeatherModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2B5F0FE2C3AEDF400B76037 /* WeatherModel.swift */; };
@@ -58,6 +59,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E29ADE4F2C3B520900E847C1 /* Shimmer in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -180,6 +182,7 @@
 			);
 			name = Weather;
 			packageProductDependencies = (
+				E29ADE4E2C3B520900E847C1 /* Shimmer */,
 			);
 			productName = "Weather and Climate Control";
 			productReference = E2E2FE2A2C34534B0048DF0B /* Weather.app */;
@@ -211,6 +214,7 @@
 			mainGroup = E2E2FE212C34534B0048DF0B;
 			packageReferences = (
 				E2B9A0752C34F79D0069E7BE /* XCRemoteSwiftPackageReference "sdk" */,
+				E29ADE4D2C3B520900E847C1 /* XCRemoteSwiftPackageReference "SwiftUI-Shimmer" */,
 			);
 			productRefGroup = E2E2FE2B2C34534B0048DF0B /* Products */;
 			projectDirPath = "";
@@ -469,6 +473,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		E29ADE4D2C3B520900E847C1 /* XCRemoteSwiftPackageReference "SwiftUI-Shimmer" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/markiv/SwiftUI-Shimmer";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.5.0;
+			};
+		};
 		E2B9A0752C34F79D0069E7BE /* XCRemoteSwiftPackageReference "sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/open-meteo/sdk.git";
@@ -478,6 +490,14 @@
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		E29ADE4E2C3B520900E847C1 /* Shimmer */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E29ADE4D2C3B520900E847C1 /* XCRemoteSwiftPackageReference "SwiftUI-Shimmer" */;
+			productName = Shimmer;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = E2E2FE222C34534B0048DF0B /* Project object */;
 }

@@ -7,13 +7,14 @@
 
 import SwiftUI
 import CoreLocation
+import Shimmer
 
 
 struct WeatherView: View {
     
     var weatherManager = WeatherManager()
     
-    var location: CLLocationCoordinate2D
+    var location: CLLocationCoordinate2D?
     var unitPreference: String
     
     @EnvironmentObject var locationManager: LocationManager
@@ -37,7 +38,6 @@ struct WeatherView: View {
             if isVisible {
                 VStack(spacing: 20) {
                     Text(cityName)
-                        .redacted(reason: isLoading ? .placeholder : [])
                         .font(.system(size: 50))
                         .fontWeight(.semibold)
                         .minimumScaleFactor(0.3)
@@ -96,7 +96,6 @@ struct WeatherView: View {
             
             
         }
-        .redacted(reason: isLoading ? .placeholder : [])
         .onAppear {
             withAnimation {
                 isVisible = true
@@ -108,6 +107,10 @@ struct WeatherView: View {
     }
     
     private func loadWeather() async {
+        while locationManager.isLoading {
+            
+        }
+        guard let location = locationManager.location else {return}
         do {
             response = try await weatherManager.getCurrentWeather(latitude: location.latitude, longitude: location.longitude, unit: unitPreference)
             

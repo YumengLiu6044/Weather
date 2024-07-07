@@ -10,7 +10,8 @@ import CoreLocationUI
 
 struct WelcomeView: View {
     @EnvironmentObject var locationManager: LocationManager
-    @State var isVisible = false
+    @Binding var isLoading: Bool
+    @State private var isVisible = false
     
     var body: some View {
         
@@ -35,6 +36,7 @@ struct WelcomeView: View {
                     
                     LocationButton(.shareCurrentLocation) {
                         locationManager.requestLocation()
+                        isLoading = true
                     }
                     .tint(.gray)
                     .clipShape(Capsule())
@@ -61,5 +63,5 @@ struct WelcomeView: View {
 }
 
 #Preview {
-    WelcomeView()
+    WelcomeView(isLoading: .constant(true))
 }

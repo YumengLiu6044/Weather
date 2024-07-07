@@ -11,16 +11,17 @@ import SwiftUI
 
 struct ContentView: View {
     @StateObject var locationManager = LocationManager()
+    @State private var isLoadingWeatherView = false
     
     var body: some View {
         VStack {
-            if let location = locationManager.location {
-                WeatherView(location: location, unitPreference: "celsius")
+            if isLoadingWeatherView {
+                WeatherView(unitPreference: "celsius")
                     .environmentObject(locationManager)
             }
             else
             {
-                WelcomeView()
+                WelcomeView(isLoading: $isLoadingWeatherView)
                     .environmentObject(locationManager)
             }
             
