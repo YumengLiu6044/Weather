@@ -56,6 +56,7 @@ struct WeatherView: View {
                         .redacted(reason: isLoading ? .placeholder : [])
                         .font(.system(size: 50))
                         .fontWeight(.semibold)
+                        .minimumScaleFactor(0.3)
                         .foregroundStyle(Color(.white))
                         .shadow(radius: 10)
                         
