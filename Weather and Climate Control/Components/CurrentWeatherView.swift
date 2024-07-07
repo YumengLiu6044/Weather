@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct CurrentWeatherView: View {
-    var currentWeather = CurrentWeather(dayName: "Wednesday", date: "Jul 3", temperature: 36, temperatureUnit: "°C", weatherName: "Sunny", weatherIconName: "https://openweathermap.org/img/wn/01d@2x.png")
+    var currentWeather = SampleData.sampleCurrentWeather
     @State private var isLoading = true
     @State private var currentTime = "23:59"
     @State var timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
@@ -17,38 +17,8 @@ struct CurrentWeatherView: View {
         VStack {
             HStack{
                 VStack{
-                    AsyncImage(url: URL(string: currentWeather.weatherIconName), transaction: Transaction(animation: .spring(response: 1, dampingFraction: 0.6, blendDuration: 0.5))) { phase in
-                        switch phase {
-                        case .success(let image):
-                            image.resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(width: 60)
-                                .shadow(radius: 10)
-                                .onAppear {
-                                    isLoading = false
-                                }
-                            
-                        case .failure:
-                            Image(systemName: "questionmark.app")
-                                .aspectRatio(contentMode: .fit)
-                                .frame(width: 60)
-                                .onAppear {
-                                    isLoading = false
-                                }
-                            
-                        case .empty:
-                            ProgressView()
-                                .frame(width: 60)
-                                .onAppear {
-                                    isLoading = true
-                                }
-                            
-                        @unknown default:
-                            EmptyView()
-                                .onAppear {
-                                    isLoading = false
-                                }
-                        }}
+                    OnlineImageView(imageURL: currentWeather.weatherIconName, isLoading: $isLoading)
+                        .frame(width: 50)
                     .padding([.top, .bottom, .trailing], 3.0)
                     
                     HStack {
@@ -86,18 +56,7 @@ struct CurrentWeatherView: View {
     }
 }
 
-struct CurrentWeather {
-    let dayName: String
-    let date: String
-    let temperature: Float
-    let temperatureUnit: String
-    let weatherName: String
-    let weatherIconName: String
-    
-    func presentTemperature() -> String {
-        return "\(temperature)°"
-    }
-}
+
 
 #Preview {
     CurrentWeatherView()

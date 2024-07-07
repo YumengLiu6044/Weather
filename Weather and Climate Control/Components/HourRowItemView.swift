@@ -10,44 +10,14 @@ import SwiftUI
 struct HourRowItemView: View {
     
     @State private var isLoading = true
-    var hourWeatherItem: HourWeatherItem = HourWeatherItem(hour: "Now", weatherIconName: "http://openweathermap.org/img/wn/01d@2x.png", temperature: 32, temperatureUnit: "°C")
+    var hourWeatherItem: HourWeatherItem = SampleData.sampleHourWeatherArray[0]
     
     var body: some View {
         VStack{
             Text(hourWeatherItem.hour)
 
-            AsyncImage(url: URL(string: hourWeatherItem.weatherIconName), transaction: Transaction(animation: .spring(response: 1, dampingFraction: 0.6, blendDuration: 0.5))) { phase in
-                switch phase {
-                case .success(let image):
-                    image.resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 50)
-                        
-                        .onAppear {
-                            isLoading = false
-                        }
-                    
-                case .failure:
-                    Image(systemName: "questionmark.app")
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 50)
-                        
-                        .onAppear {
-                            isLoading = false
-                        }
-                    
-                case .empty:
-                    ProgressView()
-                        .padding(.bottom, 5)
-                        
-                        .onAppear {
-                            isLoading = true
-                        }
-                    
-                    
-                @unknown default:
-                    EmptyView()
-                }}
+            OnlineImageView(imageURL: hourWeatherItem.weatherIconName, isLoading: $isLoading)
+                .frame(width:50)
             Text(hourWeatherItem.presentTemperature())
             
         }
@@ -60,19 +30,6 @@ struct HourRowItemView: View {
         
         
     }
-}
-
-struct HourWeatherItem : Identifiable {
-    let id: UUID = UUID()
-    let hour: String
-    let weatherIconName: String
-    let temperature: Float
-    let temperatureUnit: String
-    
-    func presentTemperature() -> String {
-        return "\(temperature)°"
-    }
-    
 }
 
 #Preview {

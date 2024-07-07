@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct DayWeatherRowView: View {
-    var dayWeatherItem: DayWeatherItem = DayWeatherItem(dayName: "Monday", maxTemperature: 42, minTemperature: 18, temperatureUnit: "°C", weatherIconName: "")
+    var dayWeatherItem: DayWeatherItem = SampleData.sampleDayWeatherArray[0]
     
     @State private var maxTemperature: Double = 42
     @State private var minTemperature: Double = 10
@@ -17,36 +17,9 @@ struct DayWeatherRowView: View {
     
     var body: some View {
         HStack {
-            AsyncImage(url: URL(string: dayWeatherItem.weatherIconName), transaction: Transaction(animation: .spring(response: 1, dampingFraction: 0.6, blendDuration: 0.5))) { phase in
-                switch phase {
-                case .success(let image):
-                    image.resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(height: 40)
-                        .onAppear {
-                            isLoading = false
-                        }
-                case .failure:
-                    Image(systemName: "questionmark.app")
-                        .aspectRatio(contentMode: .fit)
-                        .frame(height: 40)
-                        .onAppear {
-                            isLoading = false
-                        }
-                case .empty:
-                    ProgressView()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(height: 40)
-                        .onAppear {
-                            isLoading = true
-                        }
-                @unknown default:
-                    EmptyView()
-                        .onAppear {
-                            isLoading = false
-                        }
-                }
-            }
+            OnlineImageView(imageURL: dayWeatherItem.weatherIconName, isLoading: $isLoading)
+                .frame(width:45)
+            
             .padding(.trailing, 10.0)
             
             Text(dayWeatherItem.dayName)
@@ -58,7 +31,6 @@ struct DayWeatherRowView: View {
                 .redacted(reason: isLoading ? .placeholder : [])
         }
         .redacted(reason: isLoading ? .placeholder : [])
-        .gaugeStyle(.linearCapacity)
         .font(.title2)
         .foregroundStyle(.white)
         .shadow(radius: 10)
@@ -71,24 +43,9 @@ struct DayWeatherRowView: View {
         }
     }
     
-    private func normalizedTemperature() -> Double {
-        let averageTemp = dayWeatherItem.getAverageTemperature()
-        return max(0, min(averageTemp / maxTemperature, 1))
-    }
 }
 
-struct DayWeatherItem: Identifiable {
-    let id: UUID = UUID()
-    let dayName: String
-    let maxTemperature: Double
-    let minTemperature: Double
-    let temperatureUnit: String
-    let weatherIconName: String
-    
-    func getAverageTemperature() -> Double {
-        return (maxTemperature * 0.5 + minTemperature * 0.5)
-    }
-}
+
 
 #Preview {
     ZStack {
